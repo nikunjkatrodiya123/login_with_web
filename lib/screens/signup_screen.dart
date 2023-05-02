@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:login_with_web/color_controller.dart';
 import 'package:login_with_web/common/textfield_common.dart';
-import 'package:login_with_web/screens/web_screen.dart';
+import 'package:login_with_web/screens/home_Screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -176,12 +176,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       setData();
     });
-
   }
 
   Future<void> login() async {
     final url =
-        Uri.parse('https://d4e6-163-53-179-202.in.ngrok.io/api/users/login');
+        Uri.parse('https://18c3-163-53-179-202.in.ngrok.io/api/users/login');
     final response = await http.post(url, body: {
       'user_name': userNameController.text,
       'user_password': passwordController.text,
@@ -195,15 +194,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
       sharedPreferences?.setString('token', data['token']);
 
       String token = sharedPreferences?.getString('token') ?? '';
-      if(token.isNotEmpty) {
+      if (token.isNotEmpty) {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => const WebScreen(),
+              builder: (context) => const HomeScreen(),
             ),
-                (route) => false);}
+            (route) => false);
+      }
 
-        debugPrint('no data found');
+      debugPrint('no data found');
 
       // handle the response data here
     } else {

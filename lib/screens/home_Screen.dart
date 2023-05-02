@@ -6,14 +6,14 @@ import 'package:login_with_web/color_controller.dart';
 import 'package:login_with_web/screens/catagary_screen.dart';
 import 'package:login_with_web/screens/content_screen.dart';
 
-class WebScreen extends StatefulWidget {
-  const WebScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<WebScreen> createState() => _WebScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _WebScreenState extends State<WebScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   final PageController _pageController = PageController(initialPage: 0);
   int _activePage = 0;
   final List pages = [
@@ -26,7 +26,6 @@ class _WebScreenState extends State<WebScreen> {
   @override
   void initState() {
     // TODO: implement initState
-
     super.initState();
   }
 

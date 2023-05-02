@@ -8,11 +8,11 @@ import 'package:http/http.dart' as http;
 
 import 'package:image_picker/image_picker.dart';
 import 'package:login_with_web/common/textfield_common.dart';
+import 'package:login_with_web/model/user_model.dart';
 import 'package:login_with_web/screens/catagaroy_controller.dart';
-import 'package:login_with_web/screens/model/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../color_controller.dart';
+import '../color_controller.dart';
 
 class UpdateCatagaroyScreen extends StatefulWidget {
   final User? userdata;
@@ -27,11 +27,12 @@ class UpdateCatagaroyScreen extends StatefulWidget {
 }
 
 class _UpdateCatagaroyScreenState extends State<UpdateCatagaroyScreen> {
-
   SharedPreferences? sharedPreferences;
+
   getInstance() async {
     sharedPreferences = await SharedPreferences.getInstance();
   }
+
   final controller = Get.put(CatagaroyController());
 
   TextEditingController catNameController = TextEditingController();
@@ -41,12 +42,10 @@ class _UpdateCatagaroyScreenState extends State<UpdateCatagaroyScreen> {
   final ImagePicker picker = ImagePicker();
   XFile? image;
 
-
   getImage() async {
     image = await picker.pickImage(source: ImageSource.gallery);
     setState(() {});
   }
-
 
   @override
   void initState() {
@@ -159,11 +158,14 @@ class _UpdateCatagaroyScreenState extends State<UpdateCatagaroyScreen> {
 
   putUserData({int? id}) async {
     try {
-      getInstance();
+      await getInstance();
       String token = sharedPreferences?.getString('token') ?? '';
       final response = await http.put(
-        Uri.parse("https://d4e6-163-53-179-202.in.ngrok.io/api/categories/$id"),
-        headers: {"Content-Type": "application/json","Authorization": "Bearer $token"},
+        Uri.parse("https://878d-163-53-179-202.in.ngrok.io/api/categories/$id"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        },
         body: jsonEncode({
           "cat_name": catNameController.text,
           "description": descriptionController.text,

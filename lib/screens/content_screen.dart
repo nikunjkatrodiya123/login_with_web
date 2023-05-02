@@ -110,6 +110,7 @@ class _ContenScreenState extends State<ContenScreen> {
                             ),
                             IconButton(
                               onPressed: () {
+                                controller.islodings = true;
                                 controller.uId =
                                     controller.userContentData[index].contentId;
                                 Navigator.push(
@@ -121,11 +122,12 @@ class _ContenScreenState extends State<ContenScreen> {
                                     ),
                                   ),
                                 );
+                                controller.islodings = false;
                               },
                               icon: controller.uId ==
                                           controller.userContentData[index]
                                               .contentId &&
-                                      (controller.isloding ?? false)
+                                      (controller.islodings ?? false)
                                   ? const Center(
                                       child: Padding(
                                         padding: EdgeInsets.all(5.0),

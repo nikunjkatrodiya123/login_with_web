@@ -2,18 +2,19 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
-
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:login_with_web/screens/model/user_model.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:login_with_web/model/user_model.dart';
+import 'package:login_with_web/screens/signup_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CatagaroyController extends GetxController {
   SharedPreferences? sharedPreferences;
+
   getInstance() async {
     sharedPreferences = await SharedPreferences.getInstance();
-
   }
+
   bool? isloding;
   bool? islodings;
   int? uId;
@@ -25,8 +26,11 @@ class CatagaroyController extends GetxController {
       getInstance();
       String token = sharedPreferences?.getString('token') ?? '';
       final response = await http.delete(
-        Uri.parse("https://d4e6-163-53-179-202.in.ngrok.io/api/categories/$id"),
-        headers: {"Content-Type": "application/json","Authorization": "Bearer $token"},
+        Uri.parse("https://878d-163-53-179-202.in.ngrok.io/api/categories/$id"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        },
       );
       if (response.statusCode == 200) {
         log("Log  -------------->>> ");
@@ -43,12 +47,14 @@ class CatagaroyController extends GetxController {
 
   getUserData() async {
     try {
-
       getInstance();
       String token = sharedPreferences?.getString('token') ?? '';
       final response = await http.get(
-        Uri.parse("https://d4e6-163-53-179-202.in.ngrok.io/api/categories"),
-        headers: {"Content-Type": "application/json","Authorization": "Bearer $token"},
+        Uri.parse("https://878d-163-53-179-202.in.ngrok.io/api/categories"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        },
       );
       if (response.statusCode == 200) {
         userData = (jsonDecode(response.body) as List?)!
@@ -61,6 +67,9 @@ class CatagaroyController extends GetxController {
       }
     } catch (e) {
       log("Log  -------------->>> $e");
-    } finally {}
+      if (e == "failed to authenticate token") {
+        Get.offAll(const SignUpScreen());
+      }
+    }
   }
 }

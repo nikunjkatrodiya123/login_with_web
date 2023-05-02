@@ -7,8 +7,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_with_web/color_controller.dart';
 import 'package:login_with_web/common/textfield_common.dart';
+import 'package:login_with_web/model/content_user.dart';
 import 'package:login_with_web/screens/content_controller.dart';
-import 'package:login_with_web/screens/model/content_user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UpdateContent extends StatefulWidget {
   final ContentUser? userdata;
@@ -29,6 +30,11 @@ class _UpdateContentState extends State<UpdateContent> {
 
   final ImagePicker picker = ImagePicker();
   XFile? image;
+  SharedPreferences? sharedPreferences;
+
+  getInstance() async {
+    sharedPreferences = await SharedPreferences.getInstance();
+  }
 
   getImage() async {
     image = await picker.pickImage(source: ImageSource.gallery);
@@ -39,9 +45,9 @@ class _UpdateContentState extends State<UpdateContent> {
   void initState() {
     if (widget.userdata != null) {
       nameController.text = widget.userdata!.title ?? "";
-      isActiveController.text = widget.userdata!.isactive! as String;
+      //isActiveController.text = widget.userdata!.isactive! as String;
       descriptionController.text = widget.userdata!.description ?? "";
-      cIdController.text = widget.userdata!.contentId as String ?? "";
+      //cIdController.text = widget.userdata!.contentId as String ?? "";
     }
     // TODO: implement initState
     super.initState();
@@ -137,18 +143,23 @@ class _UpdateContentState extends State<UpdateContent> {
 
   putUserData({int? id}) async {
     try {
+      await getInstance();
+      String token = sharedPreferences?.getString('token') ?? '';
       final response = await http.put(
-        Uri.parse("https://582b-103-251-19-55.in.ngrok.io/api/contents/$id"),
-        headers: {"Content-Type": "application/json"},
+        Uri.parse("https://878d-163-53-179-202.in.ngrok.io/api/contents/$id"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        },
         body: jsonEncode({
           "title": nameController.text,
           "description": descriptionController.text,
           "isactive": isActiveController.text,
-          "content_id": cIdController.text,
-          "content_url":
-              " https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3",
-          "cat_thumbnail":
+          "thumbnail_url":
               "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
+          "category_id": cIdController.text,
+          "content_url":
+              "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3",
         }),
       );
       if (response.statusCode == 200) {

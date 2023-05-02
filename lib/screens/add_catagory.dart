@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:login_with_web/color_controller.dart';
 import 'package:login_with_web/common/textfield_common.dart';
+import 'package:login_with_web/model/user_model.dart';
 import 'package:login_with_web/screens/catagaroy_controller.dart';
-import 'package:login_with_web/screens/model/user_model.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddCatagory extends StatefulWidget {
@@ -25,9 +26,9 @@ class _AddCatagoryState extends State<AddCatagory> {
   TextEditingController isActiveController = TextEditingController();
   final controller = Get.put(CatagaroyController());
   SharedPreferences? sharedPreferences;
+
   getInstance() async {
     sharedPreferences = await SharedPreferences.getInstance();
-
   }
 
   final ImagePicker picker = ImagePicker();
@@ -122,12 +123,15 @@ class _AddCatagoryState extends State<AddCatagory> {
 
   putUserData() async {
     try {
-      getInstance();
+      await getInstance();
       String token = sharedPreferences?.getString('token') ?? '';
       final response = await http.post(
         Uri.parse(
-            "https://d4e6-163-53-179-202.in.ngrok.io/api/categories/create"),
-        headers: {"Content-Type": "application/json","Authorization": "Bearer $token"},
+            "https://878d-163-53-179-202.in.ngrok.io/api/categories/create"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        },
         body: jsonEncode({
           "cat_name": catNameController.text,
           "description": descriptionController.text,

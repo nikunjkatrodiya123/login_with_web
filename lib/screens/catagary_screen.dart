@@ -4,7 +4,7 @@ import 'package:login_with_web/color_controller.dart';
 import 'package:login_with_web/screens/add_catagory.dart';
 import 'package:login_with_web/screens/catagaroy_controller.dart';
 
-import 'model/update_catagory.dart';
+import 'update_catagory.dart';
 
 class CatagaroyScreen extends StatefulWidget {
   const CatagaroyScreen({Key? key}) : super(key: key);

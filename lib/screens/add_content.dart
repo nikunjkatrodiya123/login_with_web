@@ -8,8 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:login_with_web/color_controller.dart';
 import 'package:login_with_web/common/textfield_common.dart';
+import 'package:login_with_web/model/content_user.dart';
 import 'package:login_with_web/screens/content_controller.dart';
-import 'package:login_with_web/screens/model/content_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddContent extends StatefulWidget {
@@ -21,9 +21,11 @@ class AddContent extends StatefulWidget {
 
 class _AddContentState extends State<AddContent> {
   SharedPreferences? sharedPreferences;
+
   getInstance() async {
     sharedPreferences = await SharedPreferences.getInstance();
   }
+
   final controller = Get.put(ContentController());
   List<ContentUser> userContentData = [];
   TextEditingController nameController = TextEditingController();
@@ -131,11 +133,15 @@ class _AddContentState extends State<AddContent> {
 
   addUserContent() async {
     try {
-      getInstance();
+      await getInstance();
       String token = sharedPreferences?.getString('token') ?? '';
       final response = await http.post(
-        Uri.parse("https://582b-103-251-19-55.in.ngrok.io/api/contents/create"),
-        headers: {"Content-Type": "application/json","Authorization": "Bearer $token"},
+        Uri.parse(
+            "https://878d-163-53-179-202.in.ngrok.io/api/contents/create"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token"
+        },
         body: jsonEncode({
           "title": nameController.text,
           "description": descriptionController.text,
